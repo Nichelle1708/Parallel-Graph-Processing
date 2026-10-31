@@ -1,0 +1,1 @@
+-; 4 logical cores; 3.8 GB RAM; Kali GNU/Linux Rolling

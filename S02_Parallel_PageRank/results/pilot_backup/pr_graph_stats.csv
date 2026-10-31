@@ -1,0 +1,5 @@
+Dataset,Vertices,Adj_Entries,Directed,Dangling,Avg_Degree,Max_In_Degree,Max_Out_Degree,InDeg_StdDev,OutDeg_StdDev,InDeg_Gini,CSR_MB,Load_Time_s,Transpose_Time_s,Graph_Spec
+ca-GrQc,5242,28968,0,1,5.526135,81,81,7.917701,7.917701,0.554718,0.301,0.016,0.000,data/ca-GrQc.txt
+email-Enron,36692,367662,0,0,10.020222,1383,1383,36.100004,36.100004,0.729844,3.365,0.111,0.001,data/email-Enron.txt
+web-Google,875713,5105039,1,136259,5.829580,6326,456,39.228970,6.593697,0.755236,52.311,1.439,0.048,data/web-Google.txt
+rmat-s16,65536,1819896,0,18884,27.769409,9630,9630,134.774506,134.774506,0.867953,14.885,0.432,0.011,rmat:16:16:1

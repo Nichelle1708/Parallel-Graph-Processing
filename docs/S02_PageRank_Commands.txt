@@ -1,0 +1,123 @@
+CS4 S02 — PageRank: Commands to Run
+====================================
+
+IMPORTANT
+---------
+Run these commands from the ROOT of your S02/PageRank project, NOT from
+the S01 BFS folder. The commands assume these files exist:
+  scripts/download_data.sh
+  scripts/run_pagerank.sh
+  scripts/analyze_pagerank.py
+
+1) Go to your S02 project directory
+-----------------------------------
+cd ~/Downloads/cs4_pagerank
+pwd
+ls
+ls scripts
+
+If your S02 folder has a different name/location, replace the path above.
+Do not continue unless the scripts listed above exist.
+
+2) Download datasets
+--------------------
+bash scripts/download_data.sh
+
+If the script supports a dataset argument and you need web-Google specifically:
+bash scripts/download_data.sh web-Google
+
+If the download script is located inside scripts/ instead, use:
+cd scripts
+./download_data.sh
+cd ..
+
+3) Run a small pilot first
+--------------------------
+THREADS=1,2,4 \
+REPS=3 \
+PROFILE_REPS=1 \
+UNDIRECTED_FILES="data/ca-GrQc.txt data/email-Enron.txt" \
+DIRECTED_FILES="" \
+RMAT_SCALES="16" \
+bash scripts/run_pagerank.sh
+
+Then analyze:
+python3 scripts/analyze_pagerank.py
+
+Check the generated CSVs and figures before doing the full run:
+ls results
+find results -maxdepth 2 -type f
+
+4) Preserve pilot output before the full run
+--------------------------------------------
+The runner may APPEND to CSV files. Make a backup before the full experiment:
+
+mkdir -p results/pilot_backup
+cp -a results/*.csv results/pilot_backup/ 2>/dev/null || true
+cp -a results/*.md results/pilot_backup/ 2>/dev/null || true
+cp -a results/figures_pr results/pilot_backup/ 2>/dev/null || true
+
+Before clearing anything, inspect which CSV filenames the runner writes:
+ls results/*.csv
+
+If the pilot CSVs and full-run CSVs would be appended together, move the
+pilot CSVs out of the way. Do not delete them.
+
+5) Full S02 experiment
+----------------------
+After confirming the pilot works and preserving its outputs, run:
+
+THREADS=1,2,4 \
+REPS=10 \
+PROFILE_REPS=3 \
+bash scripts/run_pagerank.sh
+
+Then analyze:
+python3 scripts/analyze_pagerank.py
+
+6) Verify the outputs
+---------------------
+ls results
+find results -maxdepth 2 -type f
+
+Expected output names may vary by the actual scripts, but look for:
+- raw timing CSV
+- summary CSV / Markdown table
+- graph statistics CSV
+- schedule comparison / overhead CSVs, if implemented
+- figures in results/figures_pr/ (or the folder named by the script)
+
+7) Save system information for the report
+-----------------------------------------
+mkdir -p results
+{
+  echo "Date:"
+  date
+  echo
+  echo "OS:"
+  uname -a
+  echo
+  echo "CPU:"
+  lscpu 2>/dev/null || grep -m1 'model name' /proc/cpuinfo 2>/dev/null || true
+  echo
+  echo "Compiler:"
+  g++ --version 2>/dev/null | head -n 1 || true
+  echo
+  echo "OpenMP/compiler flags and thread settings should also be recorded from the
+runner output."
+} > results/env.txt
+
+8) If a command fails
+---------------------
+- Run `pwd` and `ls scripts` to confirm you are in the S02 project root.
+- Do not substitute BFS commands such as `scripts/run_experiments.sh` or
+  `scripts/analyze.py`; those belong to S01.
+- If the S02 script names differ, run `find . -maxdepth 3 -type f | sort`
+  and use the actual PageRank runner/analyzer names.
+- Keep the raw CSVs and logs. Do not fabricate or manually edit measurements.
+
+Submission reminder
+-------------------
+Use only the outputs actually produced by your S02 implementation. Report the
+thread count, repetitions, graph datasets, compiler, CPU, and any timing
+variability. Do not mix S01 BFS data with S02 PageRank data.
